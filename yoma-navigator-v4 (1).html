@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yoma Partner Product Navigator</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#FCB416;--gold-dark:#D4960E;--gold-mid:#FCBF30;--gold-pale:#FEF5DC;--gold-xpale:#FFFCF0;--gold-border:#FBDA7A;
+  --green:#387F6A;--green-dark:#2A6354;--green-pale:#E8F3F0;--green-border:#8BBFB4;--green-sec:#4CA78C;--green-sec-pale:#EBF5F2;
+  --navy:#0F1F35;--navy-mid:#1A3050;--slate:#506070;--slate-light:#8AA0B0;
+  --border:#E2EBF0;--border-mid:#C5D5DF;--bg:#FAFBFC;--white:#FFFFFF;
+  --text:#0F1F35;--text-soft:#506070;
+  --yoid:#6C5CE7;--yoid-dark:#4A3DC4;--yoid-pale:#F0EEFF;--yoid-border:#BDB5F5;
+  --yoma:#387F6A;--yoma-dark:#2A6354;--yoma-pale:#E8F3F0;--yoma-border:#8BBFB4;
+  --ex:#D4720A;--ex-dark:#A85608;--ex-pale:#FEF1E3;--ex-border:#F0B07A;
+  --strong-bg:#E8F3F0;--strong:#2A6354;
+  --good-bg:#EEF2FF;--good:#3546C5;
+  --mod-bg:#FEF8E6;--mod:#C68E00;
+  --no-bg:#FDECEA;--no:#C0313B;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+.shell{max-width:700px;margin:0 auto;padding:56px 24px 100px}
+
+/* Header */
+.header{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+.brand-bar{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.brand-logo{display:flex;align-items:center;gap:8px}
+.brand-logo-mark{width:34px;height:34px;background:var(--gold);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-logo-name{font-family:'Manrope',sans-serif;font-size:19px;font-weight:800;color:var(--navy);letter-spacing:-.03em}
+.brand-divider{width:1px;height:22px;background:var(--border-mid);margin:0 6px}
+.brand-tag{font-size:12px;font-weight:500;color:var(--slate);letter-spacing:.01em}
+.header h1{font-family:'Manrope',sans-serif;font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.03em;color:var(--navy);line-height:1.15;margin-bottom:14px}
+.header h1 .accent{color:var(--gold-dark)}
+.header-desc{font-size:15px;color:var(--text-soft);line-height:1.7;max-width:500px}
+.header-stats{display:flex;gap:24px;margin-top:22px;flex-wrap:wrap}
+.stat{display:flex;align-items:center;gap:7px}
+.stat-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.stat-text{font-size:13px;font-weight:400;color:var(--slate)}
+.stat-text strong{color:var(--navy);font-weight:700}
+
+/* Progress */
+.progress-meta{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--slate-light);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;font-family:'Manrope',sans-serif}
+.progress-track{height:4px;background:var(--border);border-radius:100px;overflow:hidden;margin-bottom:28px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#FCBF30);border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.section-pill{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);background:var(--gold-pale);border:1px solid var(--gold-border);border-radius:100px;padding:4px 12px;margin-bottom:12px;font-family:'Manrope',sans-serif}
+
+/* Persona grid */
+.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.persona-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:20px 18px;cursor:pointer;text-align:left;font-family:inherit;transition:all .18s cubic-bezier(.4,0,.2,1);width:100%;position:relative;overflow:hidden}
+.persona-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+.persona-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(252,180,22,.12);transform:translateY(-2px)}
+.persona-card:hover::before,.persona-card.selected::before{transform:scaleX(1)}
+.persona-card.selected{border-color:var(--gold);background:var(--gold-xpale)}
+.persona-icon{font-size:24px;margin-bottom:12px;display:block}
+.persona-label{font-size:14px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px;line-height:1.3;font-family:'Manrope',sans-serif}
+.persona-sub{font-size:12px;color:var(--slate);line-height:1.45}
+
+/* Question card */
+.q-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);padding:36px 32px 30px;box-shadow:0 1px 16px rgba(19,36,58,.04);animation:up .28s cubic-bezier(.4,0,.2,1) both;margin-bottom:8px}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.q-num{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:10px;font-family:'Manrope',sans-serif}
+.q-text{font-family:'Manrope',sans-serif;font-size:clamp(17px,2.5vw,21px);font-weight:700;color:var(--navy);line-height:1.35;margin-bottom:6px}
+.q-hint{font-size:13px;color:var(--text-soft);line-height:1.6;margin-bottom:22px}
+.multi-hint{font-size:11.5px;font-weight:600;color:var(--gold-dark);background:var(--gold-pale);border-radius:6px;padding:4px 10px;display:inline-block;margin-bottom:16px;font-family:'Manrope',sans-serif}
+
+/* Options */
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:14px;padding:15px 18px;border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--bg);cursor:pointer;text-align:left;font-family:inherit;transition:all .15s cubic-bezier(.4,0,.2,1);width:100%}
+.opt:hover{border-color:var(--gold);background:var(--gold-xpale);box-shadow:0 2px 12px rgba(252,180,22,.1)}
+.opt.selected{border-color:var(--gold);background:var(--gold-pale)}
+.opt.unsure{border-style:dashed;border-color:var(--border-mid)}
+.opt.unsure:hover{border-color:var(--slate-light);background:#F8FAFB}
+.opt.unsure.selected{border-color:var(--slate);background:#F4F6F8;border-style:dashed}
+.opt-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:border-color .15s;background:var(--white)}
+.opt:hover .opt-radio,.opt.selected .opt-radio{border-color:var(--gold)}
+.opt.selected .opt-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--gold);display:block}
+.opt.unsure.selected .opt-radio{border-color:var(--slate)}
+.opt.unsure.selected .opt-radio::after{background:var(--slate)}
+.opt-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border-mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .15s;font-size:11px;color:#fff;font-weight:700;background:var(--white)}
+.opt:hover .opt-check{border-color:var(--gold)}
+.opt.selected .opt-check{background:var(--gold);border-color:var(--gold)}
+.opt.selected .opt-check::after{content:'✓'}
+.opt-body{flex:1}
+.opt-label{font-size:14px;font-weight:600;color:var(--navy);line-height:1.35;display:block;margin-bottom:2px;font-family:'Manrope',sans-serif}
+.opt-sub{font-size:12.5px;color:var(--slate);line-height:1.45}
+.opt.unsure .opt-label{color:var(--slate);font-weight:500}
+
+/* Persona tag */
+.persona-tag{display:inline-flex;align-items:center;gap:7px;background:var(--white);border:1px solid var(--border);border-radius:100px;padding:5px 13px;font-size:12px;font-weight:600;color:var(--slate);margin-bottom:18px;font-family:'Manrope',sans-serif}
+
+/* Nav */
+.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.back-btn{background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--slate-light);cursor:pointer;display:flex;align-items:center;gap:5px;padding:6px 0;transition:color .15s}
+.back-btn:hover{color:var(--gold-dark)}
+.next-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);border:none;border-radius:100px;padding:13px 26px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s cubic-bezier(.4,0,.2,1);letter-spacing:-.01em}
+.next-btn:disabled{opacity:.35;cursor:not-allowed}
+.next-btn:not(:disabled):hover{background:var(--gold-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(252,180,22,.3)}
+.next-btn-wrap{display:flex;justify-content:flex-end;margin-top:20px}
+
+/* Results */
+.results-wrap{animation:up .35s cubic-bezier(.4,0,.2,1) both}
+.results-heading{font-family:'Manrope',sans-serif;font-size:clamp(22px,3.5vw,32px);font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.2;letter-spacing:-.02em}
+.results-sub{font-size:14px;color:var(--text-soft);margin-bottom:28px;line-height:1.65}
+
+/* Summary bar */
+.summary-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.summary-cell{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:20px 16px;text-align:center}
+.summary-cell.best{border-color:var(--gold);box-shadow:0 0 0 3px rgba(78,181,116,.14)}
+.summary-best-label{font-size:10px;font-weight:700;color:var(--gold-dark);letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;font-family:'Manrope',sans-serif}
+.summary-product{font-size:10px;font-weight:700;color:var(--slate-light);letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;font-family:'Manrope',sans-serif}
+.summary-score{font-family:'Manrope',sans-serif;font-size:38px;font-weight:800;line-height:1;margin-bottom:8px;letter-spacing:-.03em}
+.sc-yoid{color:var(--yoid)}.sc-yoma{color:var(--yoma-dark)}.sc-ex{color:var(--ex-dark)}
+
+/* Fit badge */
+.fit-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:100px;font-family:'Manrope',sans-serif}
+.fit-strong{background:var(--strong-bg);color:var(--strong)}
+.fit-good{background:var(--good-bg);color:var(--good)}
+.fit-moderate{background:var(--mod-bg);color:var(--mod)}
+.fit-no{background:var(--no-bg);color:var(--no)}
+
+/* Talk to team */
+.team-card{background:var(--navy);border-radius:var(--r-xl);padding:36px 32px;margin-bottom:20px;border:1px solid rgba(255,255,255,.06);animation:up .4s cubic-bezier(.4,0,.2,1) both;position:relative;overflow:hidden}
+.team-card::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:var(--gold);opacity:.1;pointer-events:none}
+.team-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(252,180,22,.18);color:#D4960E;border:1px solid rgba(252,180,22,.4);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:16px;font-family:'Manrope',sans-serif}
+.team-heading{font-family:'Manrope',sans-serif;font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:10px;line-height:1.2;letter-spacing:-.02em}
+.team-sub{font-size:14px;color:rgba(255,255,255,.6);line-height:1.65;margin-bottom:24px;max-width:500px}
+.team-reasons{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.team-reason{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:rgba(255,255,255,.72);line-height:1.55}
+.team-dot{width:18px;height:18px;border-radius:50%;background:rgba(252,180,22,.2);color:#7A5500;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px}
+.team-cta{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--navy);border:none;border-radius:100px;padding:13px 26px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .15s}
+.team-cta:hover{background:var(--gold-mid);transform:translateY(-1px);box-shadow:0 6px 20px rgba(252,180,22,.35)}
+.team-secondary{display:inline-flex;align-items:center;gap:7px;padding:13px 20px;border-radius:100px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.14);color:rgba(255,255,255,.65);transition:background .15s;margin-left:10px}
+.team-secondary:hover{background:rgba(255,255,255,.14)}
+
+/* Product cards */
+.product-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:18px;box-shadow:0 2px 16px rgba(19,36,58,.05)}
+.product-card.top-pick{border-color:var(--gold);box-shadow:0 0 0 3px rgba(252,180,22,.12),0 4px 24px rgba(19,36,58,.07)}
+.top-pick-banner{background:var(--gold);padding:11px 24px;font-size:11.5px;font-weight:700;color:#fff;letter-spacing:.07em;text-transform:uppercase;display:flex;align-items:center;gap:8px;font-family:'Manrope',sans-serif}
+.product-hero{padding:32px 30px 26px;position:relative;overflow:hidden}
+.product-hero::after{content:'';position:absolute;right:-70px;top:-70px;width:260px;height:260px;border-radius:50%;opacity:.1;pointer-events:none}
+.hero-yoid{background:linear-gradient(135deg,#1E1060 0%,#2D1A8A 100%)}
+.hero-yoid::after{background:var(--yoid)}
+.hero-yoma{background:linear-gradient(135deg,#0D2E26 0%,#1C4D40 100%)}
+.hero-yoma::after{background:var(--green)}
+.hero-exchange{background:linear-gradient(135deg,#3D1F00 0%,#6B3800 100%)}
+.hero-exchange::after{background:var(--ex)}
+.product-badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:14px;font-family:'Manrope',sans-serif}
+.badge-yoid{background:rgba(124,92,252,.28);color:#C4B2FF;border:1px solid rgba(124,92,252,.45)}
+.badge-yoma{background:rgba(56,127,106,.2);color:#7DD9A0;border:1px solid rgba(56,127,106,.4)}
+.badge-exchange{background:rgba(232,148,58,.22);color:#F5C078;border:1px solid rgba(232,148,58,.4)}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;position:relative}
+.product-name{font-family:'Manrope',sans-serif;font-size:clamp(26px,4vw,36px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:10px;letter-spacing:-.02em}
+.product-tagline{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6;max-width:460px}
+.hero-score{flex-shrink:0;text-align:right}
+.hero-score-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-family:'Manrope',sans-serif}
+.hero-score-num{font-family:'Manrope',sans-serif;font-size:46px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.04em}
+.product-body{padding:26px 30px 30px}
+
+/* Score section */
+.score-section{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-md);padding:18px 20px;margin-bottom:22px}
+.score-section-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--slate-light);margin-bottom:14px;font-family:'Manrope',sans-serif}
+.score-row{margin-bottom:11px}
+.score-row:last-child{margin-bottom:0}
+.score-dim-label{font-size:12px;font-weight:600;color:var(--navy);display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;font-family:'Manrope',sans-serif}
+.score-dim-label span{color:var(--slate-light);font-weight:500;font-size:11px}
+.score-bar-track{background:var(--border);border-radius:100px;height:5px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:100px;transition:width 1s cubic-bezier(.4,0,.2,1) .3s}
+
+/* Gates */
+.gate-alert{display:flex;align-items:flex-start;gap:10px;padding:13px 15px;border-radius:var(--r-sm);font-size:13px;line-height:1.55;margin-bottom:9px}
+.gate-block{background:#FDECEC;color:#8B1A22;border:1px solid #F5B8BB}
+.gate-warn{background:#FEF6E8;color:#7A4A10;border:1px solid #F5C896}
+.gate-ok{background:var(--strong-bg);color:#1A5E32;border:1px solid #A8DDB8}
+.gate-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+
+.body-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--slate-light);margin-bottom:12px;font-family:'Manrope',sans-serif}
+.why-list,.cant-list{display:flex;flex-direction:column;gap:9px}
+.why-item,.cant-item{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;line-height:1.55;color:var(--text)}
+.why-tick{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px}
+.tick-yoid{background:var(--yoid-pale);color:var(--yoid)}
+.tick-yoma{background:var(--yoma-pale);color:var(--yoma-dark)}
+.tick-ex{background:var(--ex-pale);color:var(--ex-dark)}
+.cant-x{width:18px;height:18px;border-radius:50%;background:#FDECEC;color:#C0313B;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px}
+.cant-item{color:var(--slate)}
+hr.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+
+/* Info grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.info-cell{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 15px}
+.info-cell-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-light);margin-bottom:5px;font-family:'Manrope',sans-serif}
+.info-cell-val{font-size:13px;font-weight:500;color:var(--navy);line-height:1.45}
+
+/* Also box */
+.also-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-sm);padding:15px 17px;font-size:13px;color:var(--text-soft);line-height:1.65;margin-bottom:22px}
+.also-box strong{color:var(--navy);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.chip{font-size:11.5px;font-weight:600;padding:4px 12px;border-radius:100px;border:1px solid;font-family:'Manrope',sans-serif}
+.chip-yoid{background:var(--yoid-pale);color:var(--yoid);border-color:var(--yoid-border)}
+.chip-yoma{background:var(--yoma-pale);color:var(--yoma-dark);border-color:var(--yoma-border)}
+.chip-ex{background:var(--ex-pale);color:var(--ex-dark);border-color:var(--ex-border)}
+
+/* CTAs */
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.cta-p{display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:100px;font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;border:none;transition:all .15s;letter-spacing:-.01em}
+.cta-p:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.13)}
+.cta-yoid{background:var(--yoid);color:#fff}.cta-yoid:hover{background:var(--yoid-dark)}
+.cta-yoma{background:var(--yoma);color:#fff}.cta-yoma:hover{background:var(--yoma-dark)}
+.cta-ex{background:var(--ex);color:#fff}.cta-ex:hover{background:var(--ex-dark)}
+.cta-s{display:inline-flex;align-items:center;gap:7px;padding:13px 20px;border-radius:100px;font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:var(--bg);border:1.5px solid var(--border-mid);color:var(--slate);transition:all .15s}
+.cta-s:hover{border-color:var(--gold);color:var(--green-dark)}
+
+/* Combo banner */
+.combo-banner{background:var(--navy);border-radius:var(--r-lg);padding:24px 26px;margin-bottom:18px;border:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+.combo-banner::before{content:'';position:absolute;bottom:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:var(--gold);opacity:.1;pointer-events:none}
+.combo-title{font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.02em;position:relative}
+.combo-sub{font-size:13px;color:rgba(255,255,255,.58);line-height:1.6;margin-bottom:14px;position:relative}
+.combo-chips{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+
+/* Resources */
+.resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.resource-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;background:var(--yoma-pale);border:1px solid var(--yoma-border);border-radius:var(--r-sm);text-decoration:none;transition:all .15s}
+.resource-link:hover{background:#D4EBE6;border-color:var(--yoma-dark);transform:translateY(-1px)}
+.resource-link-label{font-size:12.5px;font-weight:600;color:var(--yoma-dark);line-height:1.35;font-family:'Manrope',sans-serif}
+.resource-link-arrow{font-size:13px;color:var(--yoma-dark);flex-shrink:0;opacity:.55}
+
+/* ── Employer-specific panels ── */
+.emp-panel{background:var(--gold-pale);border:1.5px solid var(--gold-border);border-radius:var(--r-md);padding:22px 22px 20px;margin-bottom:22px}
+.emp-panel-green{background:var(--yoma-pale);border-color:var(--yoma-border)}
+.emp-panel-badge{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-dark);background:rgba(252,180,22,.15);border:1px solid var(--gold-border);border-radius:100px;padding:4px 11px;margin-bottom:12px;font-family:'Manrope',sans-serif}
+.emp-panel-badge-green{color:var(--yoma-dark);background:rgba(56,127,106,.12);border-color:var(--yoma-border)}
+.emp-panel-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;color:var(--navy);line-height:1.3;margin-bottom:8px;letter-spacing:-.01em}
+.emp-panel-body{font-size:13px;color:var(--text-soft);line-height:1.65;margin-bottom:16px}
+.emp-bullets{display:flex;flex-direction:column;gap:8px;margin-bottom:0}
+.emp-bullet{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text);line-height:1.5}
+.emp-bullet-green{color:var(--text)}
+.emp-bullet-dot{width:16px;height:16px;border-radius:50%;background:rgba(252,180,22,.25);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.emp-bullet-dot::after{content:'✓';font-size:9px;font-weight:800;color:var(--gold-dark)}
+.emp-bullet-dot-green{background:rgba(56,127,106,.2)}
+.emp-bullet-dot-green::after{color:var(--yoma-dark)}
+
+/* Cost saving box */
+.emp-saving-box{background:var(--white);border:1.5px solid var(--gold-border);border-radius:var(--r-md);padding:20px;margin-top:18px;box-shadow:0 2px 12px rgba(252,180,22,.1)}
+.emp-saving-label{font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:14px;font-family:'Manrope',sans-serif}
+.emp-saving-nums{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:8px;margin-bottom:14px}
+.emp-saving-item{text-align:center}
+.emp-saving-big{display:block;font-family:'Manrope',sans-serif;font-size:clamp(22px,3vw,30px);font-weight:800;color:var(--gold-dark);letter-spacing:-.02em;line-height:1}
+.emp-saving-sub{display:block;font-size:11px;color:var(--slate);font-weight:500;margin-top:4px;line-height:1.3}
+.emp-saving-divider{width:1px;height:40px;background:var(--gold-border);flex-shrink:0}
+.emp-saving-note{font-size:12px;color:var(--slate);line-height:1.6;background:var(--gold-pale);border-radius:6px;padding:10px 12px}
+
+@media(max-width:560px){
+  .emp-saving-nums{grid-template-columns:1fr 1fr 1fr;gap:4px}
+  .emp-saving-divider{display:none}
+}
+
+/* Restart */
+.restart-row{text-align:center;margin-top:36px}
+.restart-btn{background:none;border:none;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--slate-light);cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:color .15s;padding:4px 0}
+.restart-btn:hover{color:var(--gold-dark)}
+
+@media(max-width:560px){
+  .persona-grid{grid-template-columns:1fr}
+  .shell{padding:32px 16px 60px}
+  .q-card,.product-body,.product-hero{padding-left:20px;padding-right:20px}
+  .info-grid,.resource-grid,.summary-bar{grid-template-columns:1fr}
+  .cta-row{flex-direction:column}
+  .hero-top{flex-direction:column}
+  .hero-score{text-align:left}
+  .header-stats{gap:14px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="header">
+    <div class="brand-bar">
+      <div class="brand-logo">
+        <div class="brand-logo-mark">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L4 7v9h4v-5h4v5h4V7L10 2z" fill="#0F1F35" opacity="0.9"/><path d="M6 10h8M10 2v14" stroke="#0F1F35" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/></svg>
+        </div>
+        <span class="brand-logo-name">Yoma</span>
+      </div>
+      <div class="brand-divider"></div>
+      <span class="brand-tag">Partner Product Navigator</span>
+    </div>
+    <h1>Find the right<br><span class="accent">Yoma product</span><br>for your programme.</h1>
+    <p class="header-desc">Answer a short set of questions tailored to your organisation type. We'll score your fit across all three Yoma products and give you a clear recommendation with readiness insights and next steps.</p>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-dot"></div><span class="stat-text"><strong>3 products</strong> assessed</span></div>
+      <div class="stat"><div class="stat-dot"></div><span class="stat-text"><strong>~4 minutes</strong> to complete</span></div>
+      <div class="stat"><div class="stat-dot"></div><span class="stat-text"><strong>Tailored</strong> to your partner type</span></div>
+    </div>
+  </div>
+  <div id="app"></div>
+</div>
+<script>
+
+/* ══════════════════════════════════════════════════════
+   PERSONAS
+   Each defines: icon, label, sub, and pre-filled answers
+   that skip or pre-answer questions automatically.
+══════════════════════════════════════════════════════ */
+const PERSONAS = [
+  {
+    id:"employer",
+    icon:"💼",
+    label:"Employer or Jobs Platform",
+    sub:"Hiring youth, workforce matching, job aggregator",
+    prefill:{ q3:1, q4:0 }, // Has jobs platform, strong/limited engineering
+    q4Override: 0 // at least limited — shown as pre-answered
+  },
+  {
+    id:"lms",
+    icon:"📚",
+    label:"Learning Provider or LMS",
+    sub:"Issuing certificates, hosting learning content, driving enrolment",
+    prefill:{ q3:0 }, // Has LMS
+  },
+  {
+    id:"ngo",
+    icon:"🌍",
+    label:"NGO or Implementation Partner",
+    sub:"Youth engagement, skilling, or livelihood programmes",
+    prefill:{},
+  },
+  {
+    id:"unicef",
+    icon:"🏢",
+    label:"UNICEF Country Office",
+    sub:"Running youth programmes at country or regional level",
+    prefill:{},
+  },
+  {
+    id:"government",
+    icon:"🏛️",
+    label:"Government Ministry or Agency",
+    sub:"National-scale delivery or digital public infrastructure",
+    prefill:{},
+  },
+  {
+    id:"donor",
+    icon:"💰",
+    label:"Donor, Impact Off-taker or Investor",
+    sub:"Funding outcomes-based programmes, purchasing verified impact",
+    prefill:{},
+  }
+];
+
+/* ══════════════════════════════════════════════════════
+   QUESTION BANK
+   type: "single" | "multi"
+   unsure: true = adds "Not sure" option
+   skip: array of persona ids that skip this question
+         (because prefill covers it)
+   adapt: object of persona-specific hint overrides
+══════════════════════════════════════════════════════ */
+const ALL_QUESTIONS = [
+  {
+    id:"q1", section:"Strategic Objective",
+    text:"What is your primary objective?",
+    hint:"Select up to 2 options that best reflect your core programme goals.",
+    type:"multi", maxSelect:2, unsure:false,
+    adapt:{
+      employer:"What are your primary goals for engaging with Yoma?",
+      donor:"What are your primary goals as a funder or impact investor?"
+    },
+    opts:[
+      { label:"Issue & verify credentials",
+        sub:"Portable, immutable, privacy-preserving proof of achievements for youth" },
+      { label:"Youth engagement",
+        sub:"Connect youth in my ecosystem to learning and earning opportunities" },
+      { label:"Youth reach",
+        sub:"Drive more youth to our existing platform or opportunity listings" },
+      { label:"Simplify M&E or donor reporting",
+        sub:"Aggregated, trusted data on KPIs and impact" },
+      { label:"Outcome-based financing",
+        sub:"Link funding disbursements and payments to youth to verified impact results" },
+      { label:"Cost & time-efficient youth matching",
+        sub:"Access verified anonymised youth data to match them to our opportunities" },
+      { label:"End-to-end youth ecosystem",
+        sub:"Full programme: engage youth, issue credentials, match to paid impact opportunities" }
+    ]
+  },
+  {
+    id:"q2", section:"Data & Reporting",
+    text:"What level of data do you require?",
+    hint:"Think about your most demanding reporting audience.",
+    type:"single", unsure:true,
+    opts:[
+      { label:"Basic aggregated participation data",
+        sub:"Headcounts, completion rates, aggregated demographic data" },
+      { label:"M&E reporting",
+        sub:"Advanced monitoring & evaluation (Theory of Change + log frame)" },
+      { label:"Access to verified youth data",
+        sub:"E.g. verified education level, KYC, skills — to efficiently match youth to opportunities" }
+    ]
+  },
+  {
+    id:"q3", section:"Existing Platform",
+    text:"Do you have an existing youth-facing platform?",
+    hint:"This tells us whether you need a hosted solution or an integration layer.",
+    type:"single", unsure:false,
+    skip:["employer","lms"], // pre-filled for these personas
+    opts:[
+      { label:"Yes — Learning Management System (LMS)",
+        sub:"An existing platform for hosting and tracking learning content" },
+      { label:"Yes — Jobs or employment platform",
+        sub:"An existing platform for job listings, employer matching, or workforce management" },
+      { label:"No — but local partners or government have an existing youth platform",
+        sub:"E.g. a government learning platform, national jobs portal, or partner-run engagement tool" },
+      { label:"No platform",
+        sub:"Working in the youth sector but without a digital platform" }
+    ]
+  },
+  {
+    id:"q4", section:"Technical Readiness",
+    text:"What is your internal engineering capacity?",
+    hint:"Be honest — this directly affects which products are feasible for you right now.",
+    type:"single", unsure:false,
+    skip:["employer"], // employers assumed to have at least limited
+    adapt:{
+      employer:"As a jobs platform, you likely have engineering capacity — confirm your level below."
+    },
+    opts:[
+      { label:"Strong",
+        sub:"Backend and frontend engineers available for integration work" },
+      { label:"Limited",
+        sub:"Basic engineering / integration capabilities (API, SSO, etc.)" },
+      { label:"None",
+        sub:"No technical development capacity" }
+    ]
+  },
+  {
+    id:"q5", section:"Verification Model",
+    text:"How do you currently verify if a young person completed an activity — or access verified youth data?",
+    hint:"Select all methods that apply to your current or planned approach.",
+    type:"multi", maxSelect:3, unsure:true,
+    adapt:{
+      employer:"How do you currently verify youth credentials, qualifications, or employment eligibility?",
+      donor:"How do your implementing partners verify that impact activities have been completed?"
+    },
+    opts:[
+      { label:"We don't verify completions or youth data",
+        sub:"No formal verification process in place" },
+      { label:"Manual verification",
+        sub:"Staff review and approve completions — strong human oversight" },
+      { label:"Third-party providers",
+        sub:"E.g. education level, criminal record, KYC via external data providers" },
+      { label:"LMS back-end data",
+        sub:"Youth complete courses on our LMS — access to back-end completion data" },
+      { label:"Youth upload or share evidence",
+        sub:"Photos, documents, geo-tagging collected as proof" },
+      { label:"AI-assisted verification",
+        sub:"Automated review of evidence with human oversight" }
+    ]
+  },
+  {
+    id:"q6", section:"Budget Readiness",
+    text:"Do you have budget to support tech enablement for your programme?",
+    hint:"This covers platform subscriptions, integration costs, and ongoing hosting.",
+    type:"single", unsure:true,
+    opts:[
+      { label:"Yes — tech budget allocated",
+        sub:"Budget confirmed for technological enablement and platform costs" },
+      { label:"Possibly — depends on value alignment",
+        sub:"Would require a clear business case and value demonstration" },
+      { label:"No — no budget available",
+        sub:"No recurring subscription or integration costs possible" }
+    ]
+  },
+  {
+    id:"q7", section:"Time & Onboarding",
+    text:"What is your time commitment for Yoma-related integration or onboarding?",
+    hint:"Select the option that reflects what you can realistically commit to.",
+    type:"single", unsure:true,
+    opts:[
+      { label:"1–2 week light digital tool onboarding",
+        sub:"Training on how to use the platform — suited to hosted solutions with low integration needs" },
+      { label:"1–2 week engineering sprint",
+        sub:"API or SDK integration with a backend engineer available" },
+      { label:"1–3 month onboarding with M&E capacity",
+        sub:"Strong M&E team, clear Theory of Change, and defined impact framework required" }
+    ]
+  },
+  {
+    id:"q8", section:"Youth Incentives",
+    text:"Are you interested in rewarding or incentivising youth — and do you have budget for this?",
+    hint:"E.g. ambassador programmes, remuneration for impact activities, or ZLTO reward tokens.",
+    type:"single", unsure:false,
+    skip:["donor"], // donors don't directly incentivise youth
+    opts:[
+      { label:"Yes — rewards or incentives budget available",
+        sub:"Budget allocated or planned for youth incentives or remuneration" },
+      { label:"No — not at this time",
+        sub:"No incentives budget in the current plan" }
+    ]
+  },
+  {
+    id:"q_emp_cost", section:"Verification Cost Calculator",
+    text:"What does it currently cost your platform to verify one young person's background?",
+    hint:"Include costs for education checks, identity verification, criminal records, skills validation, or KYC providers. Approximate USD figure.",
+    type:"single", unsure:false,
+    employerOnly:true,
+    opts:[
+      { label:"Under $2 per person",        sub:"Light verification — basic ID or self-reported data only" },
+      { label:"$2–$10 per person",           sub:"Standard checks — education level, basic KYC, or manual review" },
+      { label:"$10–$30 per person",          sub:"Comprehensive checks — criminal record, education, skills, ID verification" },
+      { label:"Over $30 per person",         sub:"Full due diligence — multiple third-party providers, deep background screening" }
+    ]
+  },
+  {
+    id:"q_emp_vol", section:"Verification Cost Calculator",
+    text:"How many youth does your platform verify per month?",
+    hint:"This lets us calculate the potential monthly cost saving YoID's verified, blockchain-anchored credentials could deliver to your platform.",
+    type:"single", unsure:false,
+    employerOnly:true,
+    opts:[
+      { label:"Under 500 per month",         sub:"Early-stage or niche platform" },
+      { label:"500–2,000 per month",         sub:"Growing platform with active candidate flow" },
+      { label:"2,000–10,000 per month",      sub:"Established platform with significant hiring volume" },
+      { label:"Over 10,000 per month",       sub:"Large-scale aggregator or national jobs platform" }
+    ]
+  },
+  {
+    id:"q_gov_youth", section:"National Impact Calculator",
+    text:"Approximately how many youth are in your national skilling or employment programmes per year?",
+    hint:"This helps us estimate the potential scale of YoID's impact on your national youth data infrastructure.",
+    type:"single", unsure:false,
+    govOnly:true,
+    opts:[
+      { label:"Under 50,000",          sub:"Targeted or pilot-scale national programme" },
+      { label:"50,000–250,000",        sub:"Mid-scale national programme" },
+      { label:"250,000–1,000,000",     sub:"Large national programme" },
+      { label:"Over 1,000,000",        sub:"Population-scale national youth system" }
+    ]
+  },
+  {
+    id:"q_gov_mismatch", section:"National Impact Calculator",
+    text:"What percentage of youth in your programmes do you estimate end up in jobs that don't match their training?",
+    hint:"Skills mismatch — youth trained in one area but working in another, or unemployed despite completing training — is a key driver of wasted skilling investment.",
+    type:"single", unsure:true,
+    govOnly:true,
+    opts:[
+      { label:"Under 20% — our matching is reasonably effective",
+        sub:"Most youth find relevant employment after training" },
+      { label:"20–40% — some mismatch, known issue",
+        sub:"A significant portion of trained youth end up mismatched or unemployed" },
+      { label:"40–60% — significant mismatch problem",
+        sub:"Skills supply and employer demand are poorly aligned" },
+      { label:"Over 60% — critical mismatch",
+        sub:"Most youth trained in skills the labour market doesn't currently need" }
+    ]
+  },
+  {
+    id:"q_gov_training_cost", section:"National Impact Calculator",
+    text:"What is the approximate average cost of training or skilling one young person through a government programme?",
+    hint:"Include direct training costs, facilitator/instructor time, and programme overhead. Approximate USD per participant.",
+    type:"single", unsure:true,
+    govOnly:true,
+    opts:[
+      { label:"Under $100 per participant",   sub:"Light-touch or digital-first programmes" },
+      { label:"$100–$500 per participant",    sub:"Standard vocational or skills training" },
+      { label:"$500–$2,000 per participant",  sub:"Intensive or accredited training programmes" },
+      { label:"Over $2,000 per participant",  sub:"Formal education, apprenticeships, or multi-year programmes" }
+    ]
+  }
+];
+
+/* ══════════════════════════════════════════════════════
+   SCORING MATRIX  [yoid, yoma, exchange]
+══════════════════════════════════════════════════════ */
+const SCORES = {
+  q1:{
+    0:[35, 5, 0],  // credentials
+    1:[ 5,35, 5],  // youth engagement
+    2:[10,30, 0],  // youth reach
+    3:[ 5, 5,35],  // donor reporting
+    4:[ 0, 0,45],  // outcome-based financing
+    5:[35, 5, 0],  // youth matching
+    6:[20,20,20]   // end-to-end
+  },
+  q2:{
+    0:[ 5,20, 0],
+    1:[ 5, 5,30],
+    2:[30, 5, 0],
+    99:[ 0, 5, 0]  // not sure → small yoma.world boost
+  },
+  q3:{
+    0:[25, 0, 5],  // LMS: strong YoID fit; yoma.world NOT boosted (may feel competitive)
+    1:[25,15, 0],  // Jobs platform: YoID + yoma.world for reach
+    2:[15,25, 5],  // Local partners/govt have platform: YoID as interop layer + yoma.world as marketplace
+    3:[ 0,30, 0]   // No platform: yoma.world is the hosted solution
+  },
+  q4:{
+    0:[20, 5,18],
+    1:[10,15, 8],
+    2:[-15,25,-20]
+  },
+  q5:{
+    0:[ 0,10, 0],
+    1:[ 5,15,15],
+    2:[25, 0, 0],
+    3:[20, 5, 0],
+    4:[ 5,15,20],
+    5:[ 5, 0,30],
+    99:[ 0, 5, 0]  // not sure → small yoma.world boost
+  },
+  q6:{
+    0:[20, 5,18],
+    1:[10, 5, 8],
+    2:[-40,10,-40],
+    99:[ 0, 5, 0]  // not sure → small yoma.world boost
+  },
+  q7:{
+    0:[ 0,25, 0],
+    1:[25,10, 0],
+    2:[ 5, 5,30],
+    99:[ 0, 5, 0]  // not sure → small yoma.world boost
+  },
+  q8:{
+    0:[ 0,20, 5],
+    1:[ 0, 0, 0]
+  },
+  // Persona base scores applied at start
+  persona:{
+    employer:  [20,15,-15],
+    lms:       [18, 0,  0],  // yoma.world only earns points if LMS explicitly picks 'Youth reach'
+    ngo:       [ 5,18,  5],
+    unicef:    [ 5,12, 12],
+    government:[ 5, 5, 20],
+    donor:     [ 0, 0, 25]
+  }
+};
+
+/* ══════════════════════════════════════════════════════
+   PRODUCT CONTENT
+══════════════════════════════════════════════════════ */
+const PRODUCTS = {
+  yoid:{
+    theme:"yoid", badge:"🪪 Identity & Credentials", name:"YoID",
+    tagline:"The identity, credential and data layer. Issue verifiable credentials, give youth a portable skills wallet, and enable privacy-preserving youth data matching — the connective tissue of the Yoma ecosystem.",
+    why:[
+      "Issue and verify verifiable credentials: proof of learning, work, participation, and impact",
+      "Privacy-preserving digital identity — youth own and control their data",
+      "Portable credential wallet acting as a verified digital CV and skills backpack",
+      "API / SDK integration into your existing platform (~1–2 week engineering sprint)",
+      "Enable cost and time-efficient youth matching via anonymised verified data",
+      "Backed by UNICEF — aligned with global open standards for digital public infrastructure"
+    ],
+    cannot:[
+      "Does not host opportunities or run a youth-facing discovery marketplace",
+      "Does not manage impact funding, payments, or outcome-based financing",
+      "Does not function as an LMS or content hosting platform"
+    ],
+    cost:{ integration:"~1–2 week engineering sprint (DiDx)", subscription:"Monthly platform subscription fee", design:"Credential framework design (often the largest cost item)", marginal:"No per-user content hosting costs" },
+    deployment:"~1–4 weeks",
+    also:{ text:"YoID works best as the <strong>identity backbone</strong> of a wider programme. Pair with <strong>yoma.world</strong> to surface credentialled youth to employers, or with the <strong>Impacts Exchange</strong> to anchor funded impact to verified identities.", chips:["yoma","exchange"], labels:["yoma.world","Impacts Exchange"] },
+    cta:{ label:"Explore YoID", url:"https://docs.yoma.world/technology/what-is-yoid" }
+  },
+  yoma:{
+    theme:"yoma", badge:"🌐 Youth Marketplace", name:"yoma.world",
+    tagline:"A three-sided marketplace connecting opportunity partners, reward partners, and over 1 million registered youth. Post opportunities, issue Zlto rewards and verified credentials, and plug into an active youth engagement ecosystem.",
+    why:[
+      "Three-sided marketplace: opportunities (supply) + rewards (demand) + youth (users) — all interdependent",
+      "Post and manage opportunities: learning modules, volunteering tasks, civic activities, employment assignments, and events",
+      "Youth earn Zlto tokens (1 USD = 45 Zlto) on verified completion — redeemable for airtime, data, food, education, and more",
+      "Verified credentials (YoID) issued automatically on every verified completion — proof of learning and participation for life",
+      "Two engagement pathways: deep-link youth to an opportunity listing, or send a direct verification link to claim rewards after completion",
+      "Youth can refer other youth — peer-driven community growth and ambassador programmes",
+      "Partner dashboard for tracking completions, verifying submissions, and reviewing participation data",
+      "Hosted platform — no significant engineering required for basic opportunity posting"
+    ],
+    cannot:[
+      "Not an LMS — no native course hosting or advanced learner tracking",
+      "Does not manage impact funding, outcome-based payments, or ESG-grade reporting",
+      "Reward listings are managed by the Zlto team (zlto.co), not directly by partners — plan for this operational dependency",
+      "Youth acquisition is off-platform — Yoma has no built-in mechanism to attract users; partners are responsible for bringing youth",
+      "Does not yet offer guided pathways linking opportunities across providers (in development 2026)"
+    ],
+    cost:{
+      integration:"Minimal — fully hosted platform, no engineering required for basic use",
+      subscription:"Programme design and opportunity content creation is the primary cost driver",
+      design:"Zlto rewards budget (variable) — plan your points economy before launch",
+      marginal:"Operational staffing for opportunity moderation, partner coordination, and youth acquisition"
+    },
+    deployment:"Immediate — hosted solution, live within days of organisation setup",
+    resources:[
+      { label:"How Rewards Work", url:"https://yoma-guide.gitbook.io/yoma.guide-docs/rewards/04-01-how-rewards-work" },
+      { label:"The Three-Sided Marketplace", url:"https://yoma-guide.gitbook.io/yoma.guide-docs/overview/01-02-three-sided-marketplace" },
+      { label:"Partner Onboarding Workflow", url:"https://yoma-guide.gitbook.io/yoma.guide-docs/opportunities/03-03-partner-onboarding-workflow" },
+      { label:"Planning Your Points Economy", url:"https://yoma-guide.gitbook.io/yoma.guide-docs/getting-started/02-04-planning-your-points-economy" },
+      { label:"Verification Workflows", url:"https://yoma-guide.gitbook.io/yoma.guide-docs/opportunities/03-06-verification-workflows" },
+      { label:"Youth Engagement Loop", url:"https://yoma-guide.gitbook.io/yoma.guide-docs/youth/05-05-youth-engagement-loop" }
+    ],
+    also:{ text:"<strong>yoma.world</strong> is most impactful when youth completions generate trusted credentials via <strong>YoID</strong>, and verified activity feeds funded impact reporting through the <strong>Impacts Exchange</strong>.", chips:["yoid","exchange"], labels:["YoID","Impacts Exchange"] },
+    cta:{ label:"Become a Partner on Yoma", url:"https://yoma.world" }
+  },
+  exchange:{
+    theme:"exchange", badge:"💹 Impact Finance", name:"Yoma Impacts Exchange",
+    tagline:"Infrastructure for governed, funded and verifiable impact. Issue impact certificates for goal-oriented youth activities — tree planting, waste mapping, data collection, civil engagement — and link verified outcomes to ESG reporting and outcome-based financing.",
+    why:[
+      "Issue impact certificates linked to verified, chain-of-evidence proof",
+      "Run outcome-based financing: link funding disbursements to verified youth results",
+      "Full MERL infrastructure: Theory of Change, log frames, monitoring and evaluation",
+      "DAO-based governance for programmes, funds, and ecosystems",
+      "AI-assisted plus human verification workflows — human always in the loop",
+      "ESG-grade data infrastructure for corporate and government reporting",
+      "API-first architecture — operates without a youth-facing interface"
+    ],
+    cannot:[
+      "Does not replace youth engagement platforms — works alongside yoma.world",
+      "Does not support QR-code attendance verification (that is a yoma.world feature)",
+      "Does not act as a standalone identity system — relies on YoID for identity anchoring",
+      "Not suited for job posting, employer hiring flows, or workforce placement"
+    ],
+    cost:{ integration:"3–6 month programme design and deployment runway", subscription:"Higher upfront MERL, indicator framework, and verification logic design", design:"AI verification tooling, infrastructure, and governance setup", marginal:"Human verification staffing and ongoing reporting operational costs" },
+    deployment:"3–6 months",
+    also:{ text:"The Impacts Exchange requires <strong>YoID</strong> to anchor impact to verified youth identities, and delivers the most value when youth generate verified impact through <strong>yoma.world</strong>.", chips:["yoid","yoma"], labels:["YoID","yoma.world"] },
+    cta:{ label:"Learn About the Impacts Exchange", url:"https://yoma.world" }
+  }
+};
+
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+let persona = null;
+let answers = {};      // qid → index (single) or [indices] (multi)
+let stepHistory = [];
+let activeQuestions = [];
+let stepIdx = 0;       // index into activeQuestions
+let unsureCount = 0;
+
+/* ══════════════════════════════════════════════════════
+   BUILD ACTIVE QUESTION LIST FOR PERSONA
+══════════════════════════════════════════════════════ */
+function buildQuestions(p) {
+  return ALL_QUESTIONS.filter(q => {
+    if (q.skip && q.skip.includes(p.id)) return false;
+    if (q.employerOnly && p.id !== 'employer') return false;
+    if (q.govOnly && p.id !== 'government') return false;
+    return true;
+  });
+}
+
+/* Cost midpoints in USD */
+const COST_MIDPOINTS = { 0:1, 1:6, 2:20, 3:40 };
+const VOL_MIDPOINTS  = { 0:250, 1:1250, 2:6000, 3:15000 };
+
+function calcSaving() {
+  const costIdx = answers['q_emp_cost'];
+  const volIdx  = answers['q_emp_vol'];
+  if (costIdx === undefined || volIdx === undefined) return null;
+  const costPer   = COST_MIDPOINTS[costIdx];
+  const monthly   = VOL_MIDPOINTS[volIdx];
+  const savingPct  = 0.70;
+  const monthlySaving = Math.round(costPer * monthly * savingPct);
+  const annualSaving  = monthlySaving * 12;
+  return { costPer, monthly, monthlySaving, annualSaving, savingPct:70 };
+}
+
+/* ══════════════════════════════════════════════════════
+   SCORING ENGINE
+══════════════════════════════════════════════════════ */
+function calcScores() {
+  const base = SCORES.persona[persona.id] || [0,0,0];
+  let s = { yoid:base[0], yoma:base[1], exchange:base[2] };
+
+  for (const [qid, val] of Object.entries(answers)) {
+    const indices = Array.isArray(val) ? val : [val];
+    for (const i of indices) {
+      const d = SCORES[qid]?.[i];
+      if (d) { s.yoid += d[0]; s.yoma += d[1]; s.exchange += d[2]; }
+    }
+  }
+
+  // Apply prefill scores
+  for (const [qid, idx] of Object.entries(persona.prefill||{})) {
+    const d = SCORES[qid]?.[idx];
+    if (d) { s.yoid += d[0]; s.yoma += d[1]; s.exchange += d[2]; }
+  }
+
+  return {
+    yoid: Math.max(0,Math.min(100,s.yoid)),
+    yoma: Math.max(0,Math.min(100,s.yoma)),
+    exchange: Math.max(0,Math.min(100,s.exchange))
+  };
+}
+
+function fitLevel(score) {
+  if (score>=75) return { label:"Strong Fit",    cls:"fit-strong" };
+  if (score>=50) return { label:"Good Fit",      cls:"fit-good" };
+  if (score>=30) return { label:"Moderate Fit",  cls:"fit-moderate" };
+  return             { label:"Not Recommended", cls:"fit-no" };
+}
+
+function countUnsure() {
+  let c=0;
+  for (const val of Object.values(answers)) {
+    const arr = Array.isArray(val)?val:[val];
+    if (arr.includes(99)) c++;
+  }
+  return c;
+}
+
+function dimScores(key) {
+  const ki = key==='yoid'?0:key==='yoma'?1:2;
+  const get = (qid,val) => {
+    const arr = Array.isArray(val)?val:[val];
+    return arr.reduce((sum,i)=> sum + (SCORES[qid]?.[i]?.[ki]||0), 0);
+  };
+  const base = (SCORES.persona[persona.id]||[0,0,0])[ki];
+  const strategic = base + get('q1',answers.q1??[]) + get('q2',answers.q2??99);
+  const technical = get('q3',answers.q3??( persona.prefill?.q3??0)) + get('q4',answers.q4??(persona.prefill?.q4??0)) + get('q5',answers.q5??99);
+  const cost = get('q6',answers.q6??99) + get('q7',answers.q7??99) + get('q8',answers.q8??1);
+  return {
+    s:Math.max(0,Math.min(100,Math.round((strategic/70)*100))),
+    t:Math.max(0,Math.min(100,Math.round((technical/60)*100))),
+    c:Math.max(0,Math.min(100,Math.round((cost/55)*100)))
+  };
+}
+
+/* ══════════════════════════════════════════════════════
+   GATES
+══════════════════════════════════════════════════════ */
+function buildGates(ans, display) {
+  const g={yoid:[],yoma:[],exchange:[]};
+  const budget = Array.isArray(ans.q6)?ans.q6[0]:ans.q6;
+  const eng = ans.q4??(persona.prefill?.q4??0);
+  const platform = ans.q3??(persona.prefill?.q3);
+  const time = Array.isArray(ans.q7)?ans.q7[0]:ans.q7;
+  const verification = Array.isArray(ans.q5)?ans.q5:[ans.q5??-1];
+
+  // YoID
+  if (budget===2) g.yoid.push({type:"block",msg:"No budget available. YoID requires a monthly subscription plus a one-time integration sprint. Resolve budget before proceeding."});
+  else if (budget===99) g.yoid.push({type:"warn",msg:"Budget not confirmed. Build a clear business case for the YoID subscription — the primary cost is identity services, not content hosting."});
+  if (eng===2) g.yoid.push({type:"warn",msg:"No engineering capacity. YoID requires approximately 1–2 weeks of backend engineering. Consider outsourcing the integration sprint."});
+  if (budget===0 && eng<=1) g.yoid.push({type:"ok",msg:"Budget confirmed and engineering available. You are well-positioned for a YoID integration sprint."});
+
+  // yoma.world
+  if (eng===2) g.yoma.push({type:"ok",msg:"No engineering needed. yoma.world is a fully hosted platform — partners can onboard and post opportunities without any development work."});
+  if (platform===0||platform===1) g.yoma.push({type:"ok",msg:"You have an existing platform. yoma.world can serve as a distribution channel to reach Yoma's 1M+ registered youth audience alongside your existing system."});
+  // LMS-specific gate — reframe yoma.world as testing ground, not competition
+  if (persona?.id==='lms') {
+    const q1val = ans.q1;
+    const wantsReach = Array.isArray(q1val) ? q1val.includes(2) : q1val===2;
+    if (wantsReach) {
+      g.yoma.push({type:"ok", msg:"You selected 'Youth reach' as an objective. yoma.world is the fastest way to reach 1M+ youth with your courses — and since YoID is already built in, you can test verified credentialing at zero extra cost before committing to a full YoID integration on your own LMS."});
+    } else {
+      g.yoma.push({type:"warn", msg:"You did not select 'Youth reach' as a primary goal. yoma.world is most valuable for LMS partners who want to expand their audience. However, it can still serve as a low-cost way to test how YoID credentialing works in practice — without any engineering commitment — before investing in a direct YoID integration on your platform."});
+    }
+  }
+
+  // Exchange
+  if (budget===2) g.exchange.push({type:"block",msg:"No budget available. The Impacts Exchange has significant upfront costs: MERL framework design, verification tooling, and governance setup."});
+  if (persona.id==="employer"||platform===1) g.exchange.push({type:"warn",msg:"The Impacts Exchange is designed for impact gig programmes (tree planting, waste mapping, data collection) — not job posting or workforce placement. YoID and yoma.world are more relevant for your goals."});
+  if (time!==2&&time!==99) g.exchange.push({type:"warn",msg:"The Impacts Exchange requires a 1–3 month onboarding runway with a defined Theory of Change. Ensure your team can commit to this before starting."});
+  if (verification.includes(5)) g.exchange.push({type:"ok",msg:"AI-assisted verification is fully compatible with the Impacts Exchange, which supports AI-assisted workflows with human oversight."});
+
+  return g;
+}
+
+/* ══════════════════════════════════════════════════════
+   COMBINATION LOGIC
+══════════════════════════════════════════════════════ */
+function getCombo(scores, ans) {
+  const t=55;
+  const hy=scores.yoid>=t, hw=scores.yoma>=t, he=scores.exchange>=t;
+
+  // ── LMS persona: override all generic combos with tailored staggered path ──
+  if (persona?.id === 'lms') {
+    const q1val = ans?.q1;
+    const wantsReach = Array.isArray(q1val) ? q1val.includes(2) : q1val===2;
+    const engCapacity = ans?.q4 ?? (persona.prefill?.q4 ?? 0); // 0=strong, 1=limited, 2=none
+
+    if (engCapacity === 0) {
+      // Strong engineering — recommend YoID directly, mention yoma.world only if they want reach
+      if (wantsReach) {
+        return {
+          title:"YoID direct integration + yoma.world for reach",
+          sub:"With strong engineering capacity, we recommend integrating YoID directly into your LMS first — monthly subscription + 1–2 week sprint. In parallel, list your courses on yoma.world to reach 1M+ youth. yoma.world's built-in YoID integration means your learners can start collecting verified credentials there immediately while your own integration is in progress.",
+          chips:["yoid","yoma"], labels:["YoID","yoma.world"]
+        };
+      } else {
+        return {
+          title:"YoID — direct integration into your LMS",
+          sub:"With strong engineering capacity, integrate YoID directly into your LMS. This is a monthly subscription plus a 1–2 week engineering sprint, plus front-end design to surface the credential wallet. No need to list on yoma.world unless you want to expand your audience later.",
+          chips:["yoid"], labels:["YoID"]
+        };
+      }
+    } else {
+      // Limited or no engineering — staggered approach is better
+      if (wantsReach) {
+        return {
+          title:"Start on yoma.world, then integrate YoID",
+          sub:"With limited engineering capacity, we recommend a staggered approach. Phase 1: list your courses on yoma.world via API — YoID is already built in, so learners receive verified credentials automatically at no extra cost. This lets you test credentialing in practice and reach 1M+ youth before committing to Phase 2: the full YoID integration on your own LMS platform.",
+          chips:["yoma","yoid"], labels:["yoma.world first","YoID next"]
+        };
+      } else {
+        return {
+          title:"Start on yoma.world to test credentialing, then integrate YoID",
+          sub:"Even without an audience expansion goal, yoma.world is a low-risk way to validate how YoID credentialing works with your content — at no subscription or engineering cost. Once you've seen it in action, you can commit to integrating YoID directly into your LMS with full confidence.",
+          chips:["yoma","yoid"], labels:["yoma.world (test)","YoID (next)"]
+        };
+      }
+    }
+  }
+
+  // ── Government persona: suppress Full Stack, lead with YoID ──
+  if (persona?.id === 'government') {
+    const q3val = ans?.q3;
+    const hasOwnPlatform = q3val === 0 || q3val === 1;
+    const hasPartnerPlatform = q3val === 2;
+
+    if (hasOwnPlatform) {
+      return {
+        title:"YoID — integrated into your national platform",
+        sub:"Your existing platform stays in place. YoID adds a trusted identity and credential layer via API, giving government a unified view of youth skills across all connected platforms. yoma.world is an optional supplementary channel — not a replacement.",
+        chips:["yoid"], labels:["YoID"]
+      };
+    }
+    if (hasPartnerPlatform) {
+      return {
+        title:"YoID as interoperability layer + yoma.world to fill the gaps",
+        sub:"YoID connects your partners existing platforms into one coherent identity ecosystem. yoma.world fills coverage gaps — reaching youth not yet on any partner platform — while contributing credential data to the national youth skills picture.",
+        chips:["yoid","yoma"], labels:["YoID","yoma.world"]
+      };
+    }
+  }
+
+  // ── All other personas: standard combo logic ──
+  if(hy&&hw&&he) return {title:"Full Yoma Ecosystem Stack",sub:"Your programme spans engagement, credentialling, and funded impact. Consider a phased rollout: start with yoma.world for reach, add YoID for credentials, then the Impacts Exchange for funded outcomes.",chips:["yoid","yoma","exchange"],labels:["YoID","yoma.world","Impacts Exchange"]};
+  if(hy&&hw) return {title:"YoID + yoma.world",sub:"Youth skilling and learning-to-earning. Youth discover opportunities on yoma.world and earn portable, verified credentials via YoID.",chips:["yoid","yoma"],labels:["YoID","yoma.world"]};
+  if(hy&&he) return {title:"YoID + Impacts Exchange",sub:"Verified impact reporting and credentialled outcomes. YoID anchors identity; the Impacts Exchange issues funded, ESG-grade impact certificates.",chips:["yoid","exchange"],labels:["YoID","Impacts Exchange"]};
+  if(hw&&he) return {title:"yoma.world + Impacts Exchange",sub:"Youth engagement driving measurable, funded impact. Youth participate on yoma.world; the Impacts Exchange verifies and finances those outcomes.",chips:["yoma","exchange"],labels:["yoma.world","Impacts Exchange"]};
+  return null;
+}
+
+/* ══════════════════════════════════════════════════════
+   RENDER ENGINE
+══════════════════════════════════════════════════════ */
+function pct() {
+  if(!persona) return 0;
+  return Math.round(((stepIdx)/(activeQuestions.length))*100);
+}
+
+function renderProgress(label) {
+  return `
+    <div class="progress-meta"><span>${label}</span><span>${pct()}%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct()}%"></div></div>
+  `;
+}
+
+function personaTag() {
+  if(!persona) return '';
+  return `<div class="persona-tag">${persona.icon} ${persona.label}</div>`;
+}
+
+/* ── STEP 0: Persona selector ── */
+function renderPersonaSelect() {
+  const cards = PERSONAS.map(p=>`
+    <button class="persona-card" onclick="choosepersona('${p.id}')">
+      <span class="persona-icon">${p.icon}</span>
+      <span class="persona-label">${p.label}</span>
+      <span class="persona-sub">${p.sub}</span>
+    </button>
+  `).join('');
+
+  document.getElementById('app').innerHTML=`
+    <div class="nav"><div></div></div>
+    <div class="progress-meta"><span>Step 1 of 2 — Who are you?</span><span>0%</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+    <div class="section-pill">Partner Type</div>
+    <div class="q-card">
+      <div class="q-num">First, tell us about your organisation</div>
+      <div class="q-text">Which partner type best describes you?</div>
+      <div class="q-hint">We'll tailor the questions to your context — no irrelevant questions, no wasted time.</div>
+      <div class="persona-grid">${cards}</div>
+    </div>
+  `;
+}
+
+function choosepersona(id) {
+  persona = PERSONAS.find(p=>p.id===id);
+  answers = {};
+  stepHistory = [];
+  stepIdx = 0;
+  activeQuestions = buildQuestions(persona);
+  renderCurrentQuestion();
+}
+
+/* ── Question render ── */
+function renderCurrentQuestion() {
+  const q = activeQuestions[stepIdx];
+  const qNum = stepIdx+1;
+  const qTotal = activeQuestions.length;
+  const hint = q.adapt?.[persona.id] || q.hint;
+  const currentVal = answers[q.id];
+
+  // Build options
+  const opts = q.opts.map((o,i)=>{
+    const sel = q.type==='multi'
+      ? (Array.isArray(currentVal)&&currentVal.includes(i))
+      : currentVal===i;
+    const indicator = q.type==='multi'
+      ? `<div class="opt-check"></div>`
+      : `<div class="opt-radio"></div>`;
+    return `
+      <button class="opt${sel?' selected':''}" onclick="selectOpt(${i})">
+        ${indicator}
+        <div class="opt-body">
+          <span class="opt-label">${o.label}</span>
+          <span class="opt-sub">${o.sub}</span>
+        </div>
+      </button>
+    `;
+  }).join('');
+
+  const unsureOpt = q.unsure ? `
+    <button class="opt unsure${currentVal===99||(Array.isArray(currentVal)&&currentVal.includes(99))?' selected':''}" onclick="selectOpt(99)">
+      <div class="${q.type==='multi'?'opt-check':'opt-radio'}"></div>
+      <div class="opt-body">
+        <span class="opt-label">Not sure yet</span>
+        <span class="opt-sub">Skip this question — we'll factor in uncertainty in your result</span>
+      </div>
+    </button>
+  ` : '';
+
+  const multiHint = q.type==='multi' ? `<div class="multi-hint">Select up to ${q.maxSelect}</div>` : '';
+
+  const hasAnswer = currentVal!==undefined && !(Array.isArray(currentVal)&&currentVal.length===0);
+
+  document.getElementById('app').innerHTML=`
+    <div class="nav">
+      <button class="back-btn" onclick="goBack()">← Back</button>
+    </div>
+    ${renderProgress(`Question ${qNum} of ${qTotal}`)}
+    ${personaTag()}
+    <div class="section-pill">${q.section}</div>
+    <div class="q-card">
+      <div class="q-num">Question ${qNum} of ${qTotal}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-hint">${hint}</div>
+      ${multiHint}
+      <div class="opts">${opts}${unsureOpt}</div>
+    </div>
+    <div class="next-btn-wrap">
+      <button class="next-btn" onclick="nextStep()" ${hasAnswer?'':'disabled'}>
+        ${stepIdx<activeQuestions.length-1?'Next question →':'See my results →'}
+      </button>
+    </div>
+  `;
+}
+
+function selectOpt(i) {
+  const q = activeQuestions[stepIdx];
+  if(q.type==='multi') {
+    let cur = Array.isArray(answers[q.id]) ? [...answers[q.id]] : [];
+    // If selecting "not sure" (99), clear others
+    if(i===99) { cur = cur.includes(99)?[]:[99]; }
+    else {
+      // Remove "not sure" if selecting a real answer
+      cur = cur.filter(x=>x!==99);
+      if(cur.includes(i)) cur=cur.filter(x=>x!==i);
+      else if(cur.length<q.maxSelect) cur.push(i);
+    }
+    answers[q.id]=cur;
+  } else {
+    answers[q.id]=i;
+  }
+  renderCurrentQuestion();
+}
+
+function nextStep() {
+  const q=activeQuestions[stepIdx];
+  const val=answers[q.id];
+  const hasAnswer=val!==undefined&&!(Array.isArray(val)&&val.length===0);
+  if(!hasAnswer) return;
+  stepHistory.push(stepIdx);
+  stepIdx++;
+  if(stepIdx>=activeQuestions.length) renderResults();
+  else renderCurrentQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goBack() {
+  if(stepHistory.length===0) { persona=null; renderPersonaSelect(); return; }
+  stepIdx=stepHistory.pop();
+  renderCurrentQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── Results ── */
+function renderResults() {
+  const raw=calcScores();
+  const gates=buildGates(answers,raw);
+  const unsure=countUnsure();
+
+  const display={...raw};
+  if(gates.yoid.some(g=>g.type==='block'))     display.yoid=Math.min(display.yoid,28);
+  if(gates.exchange.some(g=>g.type==='block')) display.exchange=Math.min(display.exchange,28);
+
+  const fits={
+    yoid:fitLevel(display.yoid),
+    yoma:fitLevel(display.yoma),
+    exchange:fitLevel(display.exchange)
+  };
+
+  const order=['yoid','yoma','exchange'].sort((a,b)=>display[b]-display[a]);
+  const combo=getCombo(display, answers);
+
+  // If 2+ unsure OR top score <35, trigger "Talk to team"
+  const talkToTeam = unsure>=2 || display[order[0]]<35;
+
+  const summaryHtml=`
+    <div class="summary-bar">
+      ${order.map((k,i)=>`
+        <div class="summary-cell${i===0?' best':''}">
+          ${i===0?`<div class="summary-best-label">⭐ Best fit</div>`:''}
+          <div class="summary-product">${k==='yoid'?'YoID':k==='yoma'?'yoma.world':'Impacts Exchange'}</div>
+          <div class="summary-score sc-${k==='exchange'?'ex':k}">${display[k]}</div>
+          <span class="fit-badge ${fits[k].cls}">${fits[k].label}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  const comboHtml=combo?`
+    <div class="combo-banner">
+      <div class="combo-title">✦ Recommended combination: ${combo.title}</div>
+      <div class="combo-sub">${combo.sub}</div>
+      <div class="combo-chips">${combo.chips.map((c,i)=>`<span class="chip chip-${c==='exchange'?'ex':c}">${combo.labels[i]}</span>`).join('')}</div>
+    </div>
+  `:'';
+
+  const teamHtml=talkToTeam?renderTalkToTeam(unsure,display[order[0]]):'';
+  const cards=order.map((k,i)=>renderCard(k,display[k],gates[k],fits[k],i===0)).join('');
+
+  document.getElementById('app').innerHTML=`
+    <div class="nav"><button class="back-btn" onclick="goBack()">← Back</button></div>
+    <div class="results-wrap">
+      <div class="progress-meta"><span>Complete</span><span>100%</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
+      ${personaTag()}
+      <div class="results-heading">Your product fit results</div>
+      <div class="results-sub">Scores are out of 100. Products with unresolved readiness blockers have been capped. The best-fit product is shown first.</div>
+      ${summaryHtml}
+      ${teamHtml}
+      ${comboHtml}
+      ${cards}
+      <div class="restart-row">
+        <button class="restart-btn" onclick="restart()">↺ Start over as a different partner type</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderTalkToTeam(unsureCount,topScore) {
+  const reasons=[];
+  if(unsureCount>=2) reasons.push("You selected 'Not sure' on more than one question — your programme design may benefit from a conversation before committing to a product");
+  if(topScore<35) reasons.push("No product scored above 35 — your needs may span multiple products or require a custom approach");
+  reasons.push("Our team can walk you through the right product combination for your specific context");
+  reasons.push("We can help you define your credential framework, impact indicators, or integration requirements before you commit");
+
+  return `
+    <div class="team-card">
+      <div class="team-badge">💬 Recommended</div>
+      <div class="team-heading">Talk to the Yoma team first</div>
+      <div class="team-sub">Based on your answers, we recommend a conversation with our partnership team before selecting a product. Here's why:</div>
+      <div class="team-reasons">
+        ${reasons.map(r=>`<div class="team-reason"><div class="team-dot">→</div><span>${r}</span></div>`).join('')}
+      </div>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px">
+        <a href="https://yoma.world" target="_blank" class="team-cta">💬 Talk to our team →</a>
+        <button class="team-secondary" onclick="this.closest('.team-card').style.display='none'">See scores anyway</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEmployerPanel(key) {
+  const saving = calcSaving();
+
+  if (key === 'yoid') {
+    const costLine = saving
+      ? `<div class="emp-saving-box">
+          <div class="emp-saving-label">💰 Estimated cost reduction for your platform</div>
+          <div class="emp-saving-nums">
+            <div class="emp-saving-item">
+              <span class="emp-saving-big">$${saving.monthlySaving.toLocaleString()}</span>
+              <span class="emp-saving-sub">saved per month</span>
+            </div>
+            <div class="emp-saving-divider"></div>
+            <div class="emp-saving-item">
+              <span class="emp-saving-big">$${saving.annualSaving.toLocaleString()}</span>
+              <span class="emp-saving-sub">saved per year</span>
+            </div>
+            <div class="emp-saving-divider"></div>
+            <div class="emp-saving-item">
+              <span class="emp-saving-big">${saving.savingPct}%</span>
+              <span class="emp-saving-sub">verification reduction</span>
+            </div>
+          </div>
+          <div class="emp-saving-note">Based on ${saving.monthly.toLocaleString()} verifications/month at $${saving.costPer} each. YoID's blockchain-anchored credentials eliminate the need to re-verify education, skills, and identity data already validated in the Yoma ecosystem — a conservative 70% reduction.</div>
+        </div>`
+      : '';
+
+    return `
+      <hr class="divider">
+      <div class="emp-panel">
+        <div class="emp-panel-badge">💼 For employment platforms like yours</div>
+        <div class="emp-panel-title">Reduce verification costs. Trust once, match at scale.</div>
+        <div class="emp-panel-body">Every credential in Yoma's ecosystem — education level, skills earned, event participation, impact task completions — is verified once, recorded immutably on blockchain, and instantly trustworthy. Your platform no longer needs to re-verify what Yoma has already validated.</div>
+        <div class="emp-bullets">
+          <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>Education level, criminal record proxies, KYC — verified by trusted UNICEF-backed ecosystem partners</span></div>
+          <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>Credentials are immutable and blockchain-anchored — tamper-proof and instantly verifiable via API</span></div>
+          <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>Integrate once via YoID API — query verified youth profiles without storing sensitive personal data</span></div>
+          <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>Reduce third-party KYC and background check costs significantly per verified candidate</span></div>
+        </div>
+        ${costLine}
+      </div>
+    `;
+  }
+
+  if (key === 'yoma') {
+    return `
+      <hr class="divider">
+      <div class="emp-panel emp-panel-green">
+        <div class="emp-panel-badge emp-panel-badge-green">💼 For employment platforms like yours</div>
+        <div class="emp-panel-title">Access 1M+ verified, active youth — without building your own audience.</div>
+        <div class="emp-panel-body">yoma.world has over 1 million registered youth actively completing learning, civic, and employment opportunities. By listing your jobs and opportunities on Yoma via API, you tap directly into a motivated, pre-verified talent pipeline — without any marketing spend.</div>
+        <div class="emp-bullets">
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Post job listings on yoma.world and reach 1M+ registered youth via API integration</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Youth already carry verified credentials — pre-screened talent without extra recruitment cost</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Drive high-intent candidates from Yoma directly to your platform's application flow</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Optionally reward applicants with ZLTO tokens — proven to increase engagement and completion rates</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  return '';
+}
+
+function calcGovSaving() {
+  const youthIdx    = answers['q_gov_youth'];
+  const mismatchIdx = answers['q_gov_mismatch'];
+  const costIdx     = answers['q_gov_training_cost'];
+  if (youthIdx === undefined || mismatchIdx === undefined || costIdx === undefined) return null;
+
+  // Midpoints
+  const youthMid    = [25000, 150000, 600000, 1500000][youthIdx];
+  const mismatchPct = [0.10, 0.30, 0.50, 0.70][mismatchIdx];  // midpoint of each band
+  const costMid     = [60, 300, 1200, 3000][costIdx];
+
+  // 1. Wasted training budget (mismatch * youth * cost per person)
+  //    YoID better matching reduces mismatch by ~40% (conservative)
+  const matchingImprovementPct = 0.40;
+  const wastedBudget = youthMid * mismatchPct * costMid;
+  const matchingSaving = Math.round(wastedBudget * matchingImprovementPct);
+
+  // 2. Duplicate verification savings
+  //    Assume government currently spends ~$3 per youth re-verifying credentials from other platforms
+  //    (conservative — actual third-party KYC can be $5–$20)
+  const verificationCostPerYouth = 3;
+  const verificationSaving = Math.round(youthMid * verificationCostPerYouth * 0.70);
+
+  // 3. Data infrastructure consolidation
+  //    Rough estimate: maintaining N siloed systems vs one shared identity layer
+  //    Conservative $50K/year per avoided silo, assume 3-5 silos on average
+  const infraSaving = 150000;
+
+  const totalAnnual = matchingSaving + verificationSaving + infraSaving;
+
+  return {
+    youthMid, mismatchPct: Math.round(mismatchPct * 100), costMid,
+    matchingSaving, verificationSaving, infraSaving, totalAnnual,
+    wastedBudget: Math.round(wastedBudget)
+  };
+}
+
+function renderGovernmentPanel(key) {
+  const q3val = answers?.q3 ?? (persona?.prefill?.q3);
+  // index 2 = "local partners/govt have platform", 0/1 = has own platform
+  const hasOwnPlatform = q3val === 0 || q3val === 1;
+  const hasPartnerPlatform = q3val === 2;
+  const noPlatform = q3val === 3 || q3val === undefined;
+
+  if (key === 'yoid') {
+    return `
+      <hr class="divider">
+      <div class="emp-panel" style="background:#F0EEFF;border-color:#C9BAFD">
+        <div class="emp-panel-badge" style="color:#4A3DC4;background:rgba(108,92,231,.12);border-color:#C9BAFD">🏛️ For government & national programmes</div>
+        <div class="emp-panel-title" style="color:var(--navy)">
+          ${hasOwnPlatform
+            ? 'YoID integrates into your existing national platform — no replacement required.'
+            : 'YoID becomes your national youth identity infrastructure — connecting every platform in your ecosystem.'}
+        </div>
+        <div class="emp-panel-body">
+          ${hasOwnPlatform
+            ? 'Your national platform does not need to be replaced. YoID integrates directly via API — adding a trusted, privacy-preserving identity and credential layer to what you already have. Every youth who uses your platform gets a portable digital identity that follows them across ministries, implementing partners, NGOs, and private sector employers.'
+            : 'YoID gives every young person in your country a single trusted digital identity that works across all platforms — government portals, donor-funded LMS platforms, NGO programmes, and private sector job boards. One identity, one verified record, recognised everywhere.'}
+        </div>
+
+        <div style="background:rgba(108,92,231,.07);border:1.5px solid #C9BAFD;border-radius:var(--r-md);padding:20px 20px 16px;margin:16px 0 16px">
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4A3DC4;margin-bottom:14px;font-family:'Manrope',sans-serif">🎯 Why governments choose YoID</div>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">A national youth skills dashboard — across every platform</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">YoID aggregates anonymised, verified skill data from every connected platform into a single national view. For the first time, government can see what skills youth actually have — not just who enrolled in a training programme — and identify gaps between youth skills supply and employer demand.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔗</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">Solve youth unemployment with data, not guesswork</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">Youth unemployment often persists not because opportunities don't exist, but because skills and opportunities can't find each other. YoID creates an anonymised matching layer — connecting verified youth skills profiles to employer vacancy requirements at national scale, without exposing sensitive personal data.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🧩</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">End the fragmentation of youth skilling programmes</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">Today, a young person trained through a donor-funded NGO programme, a government TVET, and an online LMS holds three separate certificates that no one can verify or connect. YoID creates one portable, blockchain-anchored record of their full learning journey — so their whole story is visible and trusted, whoever is looking.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🏭</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">Align national skilling to real employer needs</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">With anonymised aggregated data on what skills youth are acquiring, government can identify which sectors are oversupplied and which are starved of talent — and redirect skilling investment accordingly. This closes the loop between training policy and labour market reality.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔒</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">Privacy-preserving by design — youth own their data</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">YoID is built on self-sovereign identity principles, backed by UNICEF. Government accesses anonymised, aggregated insights — not individual personal data. Youth control when and with whom they share their credential profile. This protects citizen rights while still delivering the population-level insights government needs.</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📋</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">Trusted for SDG reporting, donor accountability, and national audits</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">Credentials on YoID are immutable and blockchain-anchored — they can be presented to donors, auditors, and international bodies as tamper-proof evidence of programme outcomes. This reduces reporting overhead and strengthens government's ability to demonstrate the impact of national youth investment.</div>
+              </div>
+            </div>
+
+            ${hasOwnPlatform || hasPartnerPlatform ? `
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚙️</div>
+              <div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--navy);font-family:'Manrope',sans-serif;margin-bottom:3px">${hasOwnPlatform ? 'Integrate into your existing national platform — ~1-2 week engineering sprint' : 'Connect your partners platforms via API — no platform replacement required'}</div>
+                <div style="font-size:13px;color:var(--text-soft);line-height:1.55">${hasOwnPlatform ? 'YoID connects to your existing national platform via API or SDK. Typical integration takes approximately 1–2 weeks of engineering time. Youth using your platform from day one receive a portable identity they can take to any other Yoma-connected platform.' : 'YoID acts as the interoperability layer across your partner ecosystem. Each platform — government, NGO, private sector — integrates independently. Youth carry a single verified identity across all of them, giving government a unified view without requiring any one platform to be rebuilt.'}</div>
+              </div>
+            </div>` : ''}
+
+          </div>
+        </div>
+
+        <div class="emp-saving-note" style="background:rgba(108,92,231,.07);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--slate);line-height:1.6;border:1px solid #C9BAFD">
+          <strong style="color:#4A3DC4">In practice:</strong> Governments working with Yoma typically start by connecting one or two existing platforms to YoID, issuing credentials to youth already using those platforms. As more platforms connect, the national youth skills picture becomes richer — and the matching, reporting, and policy value compounds.
+        </div>
+
+        ${renderGovSavings()}
+
+      </div>
+    `;
+  }
+
+  if (key === 'yoma') {
+    const q3val = answers?.q3 ?? (persona?.prefill?.q3);
+    const hasOwnPlatform = q3val === 0 || q3val === 1;
+    const hasPartnerPlatform = q3val === 2;
+
+    if (hasOwnPlatform) {
+      return `
+        <hr class="divider">
+        <div class="emp-panel emp-panel-green">
+          <div class="emp-panel-badge emp-panel-badge-green">🏛️ For government & national programmes</div>
+          <div class="emp-panel-title">yoma.world complements your national platform — it does not compete with it.</div>
+          <div class="emp-panel-body">Since you have an existing national platform, yoma.world is most valuable as a supplementary channel — reaching youth who are not yet on your platform, running specific engagement campaigns, or connecting youth to partner opportunities outside of government. Your primary integration focus should be YoID, which strengthens your existing platform directly.</div>
+          <div class="emp-bullets" style="margin-top:12px">
+            <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Reach youth who are not yet on government platforms — particularly informally employed or out-of-school youth</span></div>
+            <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Run targeted national campaigns without building new infrastructure</span></div>
+            <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Credentials earned on yoma.world flow into YoID — contributing to the national youth skills picture</span></div>
+          </div>
+        </div>
+      `;
+    }
+    if (hasPartnerPlatform) {
+      return `
+        <hr class="divider">
+        <div class="emp-panel emp-panel-green">
+          <div class="emp-panel-badge emp-panel-badge-green">🏛️ For government & national programmes</div>
+          <div class="emp-panel-title">yoma.world can bridge the gaps between your partners platforms.</div>
+          <div class="emp-panel-body">Where your local partners and government platforms do not yet cover all youth — particularly informal workers, rural youth, or those between programmes — yoma.world provides a neutral, hosted engagement layer that all partners can post to. Combined with YoID as the identity backbone, it creates a coherent national ecosystem without requiring any single platform to be rebuilt.</div>
+        </div>
+      `;
+    }
+    return `
+      <hr class="divider">
+      <div class="emp-panel emp-panel-green">
+        <div class="emp-panel-badge emp-panel-badge-green">🏛️ For government & national programmes</div>
+        <div class="emp-panel-title">yoma.world can be your national youth engagement platform — ready immediately.</div>
+        <div class="emp-panel-body">Without an existing digital platform, yoma.world provides a hosted, ready-to-deploy solution. Government and partners can post opportunities immediately — learning, civic engagement, skills challenges — and all completions automatically generate YoID-verified credentials, building the national youth skills picture from day one.</div>
+      </div>
+    `;
+  }
+
+  return '';
+}
+
+function renderGovSavings() {
+  const gs = calcGovSaving();
+  if (!gs) return '';
+
+  function fmt(n) {
+    if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
+    if (n >= 1000)    return '$' + Math.round(n/1000) + 'K';
+    return '$' + n;
+  }
+
+  return '<div style="margin-top:16px;background:#fff;border:2px solid #C9BAFD;border-radius:var(--r-md);padding:22px;box-shadow:0 2px 12px rgba(108,92,231,.1)">' +
+    '<div style="font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4A3DC4;margin-bottom:6px;font-family:Manrope,sans-serif">💰 Estimated annual value of YoID for your national programme</div>' +
+    '<div style="font-size:12px;color:var(--slate);margin-bottom:18px;line-height:1.5">Based on ' + gs.youthMid.toLocaleString() + ' youth/year · ' + gs.mismatchPct + '% skills mismatch · ' + fmt(gs.costMid) + ' avg training cost per person</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">' +
+      '<div style="background:rgba(108,92,231,.07);border-radius:10px;padding:14px 12px;text-align:center;border:1px solid #C9BAFD">' +
+        '<div style="font-family:Manrope,sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#4A3DC4;letter-spacing:-.02em;line-height:1">' + fmt(gs.matchingSaving) + '</div>' +
+        '<div style="font-size:11px;color:var(--slate);margin-top:5px;line-height:1.35;font-weight:500">Saved from reduced<br>skills mismatch</div>' +
+      '</div>' +
+      '<div style="background:rgba(108,92,231,.07);border-radius:10px;padding:14px 12px;text-align:center;border:1px solid #C9BAFD">' +
+        '<div style="font-family:Manrope,sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#4A3DC4;letter-spacing:-.02em;line-height:1">' + fmt(gs.verificationSaving) + '</div>' +
+        '<div style="font-size:11px;color:var(--slate);margin-top:5px;line-height:1.35;font-weight:500">Saved on duplicate<br>credential verification</div>' +
+      '</div>' +
+      '<div style="background:rgba(108,92,231,.07);border-radius:10px;padding:14px 12px;text-align:center;border:1px solid #C9BAFD">' +
+        '<div style="font-family:Manrope,sans-serif;font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#4A3DC4;letter-spacing:-.02em;line-height:1">' + fmt(gs.infraSaving) + '</div>' +
+        '<div style="font-size:11px;color:var(--slate);margin-top:5px;line-height:1.35;font-weight:500">Saved on siloed data<br>infrastructure</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="background:linear-gradient(135deg,#4A3DC4,#6C5CE7);border-radius:10px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">' +
+      '<div>' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:.08em;text-transform:uppercase;font-family:Manrope,sans-serif;margin-bottom:3px">Estimated total annual value</div>' +
+        '<div style="font-family:Manrope,sans-serif;font-size:clamp(28px,4vw,38px);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1">' + fmt(gs.totalAnnual) + '</div>' +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;max-width:220px">Conservative estimate. Value grows as more platforms connect to YoID and the national skills picture becomes more complete.</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="font-size:11.5px;color:var(--slate);line-height:1.65;background:rgba(108,92,231,.05);border-radius:7px;padding:10px 12px;border:1px solid rgba(108,92,231,.15)">' +
+      '<strong style="color:#4A3DC4">How we calculated this: </strong>' +
+      'Mismatch saving: ' + gs.youthMid.toLocaleString() + ' youth × ' + gs.mismatchPct + '% mismatch × ' + fmt(gs.costMid) + ' training cost × 40% improvement from data-driven matching = ' + fmt(gs.matchingSaving) + '/year. ' +
+      'Verification saving: ' + gs.youthMid.toLocaleString() + ' youth × $3 avg re-verification cost × 70% reduction = ' + fmt(gs.verificationSaving) + '/year. ' +
+      'Infrastructure: conservative $150K/year from consolidating siloed national data systems. ' +
+      'All figures are indicative estimates for planning conversations — not contractual commitments.' +
+    '</div>' +
+  '</div>';
+}
+
+function renderLMSPanel(key) {
+  if (key === 'yoid') {
+    const engCapacity = answers?.q4 ?? (persona?.prefill?.q4 ?? 0);
+    const q1val = answers?.q1;
+    const wantsReach = Array.isArray(q1val) ? q1val.includes(2) : q1val===2;
+    const isStrong = engCapacity === 0;
+
+    const strongContent = `
+      <div class="emp-panel-title">You have strong engineering capacity — integrate YoID directly.</div>
+      <div class="emp-panel-body">With a strong engineering team, the most efficient path is to integrate YoID directly into your LMS. This involves a monthly platform subscription, a 1–2 week engineering sprint to connect via API or SDK, and front-end design work to surface the credential wallet within your existing learner interface.</div>
+      <div class="emp-bullets" style="margin-top:14px">
+        <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>Learners earn portable, blockchain-anchored credentials on completion — verified once, trusted everywhere</span></div>
+        <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>Credentials are immutable and interoperable across the entire Yoma ecosystem and beyond</span></div>
+        <div class="emp-bullet"><div class="emp-bullet-dot"></div><span>${wantsReach ? 'You can also list courses on yoma.world in parallel to reach 1M+ youth while your integration is underway' : 'yoma.world is optional — only add it if you decide to expand your audience later'}</span></div>
+      </div>`;
+
+    const stagedContent = `
+      <div class="emp-panel-title">Recommended: start on yoma.world to test credentialing, then integrate YoID.</div>
+      <div class="emp-panel-body">YoID is the right long-term investment — but it comes with real commitments: a monthly subscription and a 1–2 week engineering sprint plus front-end wallet UI work. With limited engineering capacity, a staggered approach is lower risk.</div>
+      <div class="emp-panel-body" style="margin-top:8px">List your courses on yoma.world via API first. YoID is already fully integrated there — your learners receive verified credentials automatically on completion. You test the whole credentialing flow in practice, validate demand, and build confidence before committing to the full YoID integration.</div>
+      <div class="emp-bullets" style="margin-top:14px">
+        <div class="emp-bullet"><div class="emp-bullet-dot"></div><span><strong>Phase 1 (now):</strong> List courses on yoma.world — credentials issued automatically, zero subscription cost</span></div>
+        <div class="emp-bullet"><div class="emp-bullet-dot"></div><span><strong>Phase 2 (when ready):</strong> Integrate YoID into your LMS — monthly subscription + 1–2 week sprint + wallet UI</span></div>
+        <div class="emp-bullet"><div class="emp-bullet-dot"></div><span><strong>Result:</strong> Learners carry portable credentials from your own platform — verified once, trusted everywhere</span></div>
+      </div>
+      <div class="emp-saving-box" style="margin-top:16px;background:var(--gold-pale);border-color:var(--gold-border)">
+        <div class="emp-saving-label">🗺️ Staggered integration roadmap</div>
+        <div style="display:flex;gap:0;margin-bottom:12px">
+          <div style="flex:1;background:var(--white);border:1px solid var(--gold-border);border-radius:8px 0 0 8px;padding:12px 14px">
+            <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:'Manrope',sans-serif">Phase 1 — Now</div>
+            <div style="font-size:13px;font-weight:600;color:var(--navy);font-family:'Manrope',sans-serif">yoma.world API</div>
+            <div style="font-size:12px;color:var(--slate);margin-top:3px;line-height:1.4">List courses · Test credentialing · Zero subscription cost</div>
+          </div>
+          <div style="display:flex;align-items:center;background:var(--gold);padding:0 10px;font-size:16px;color:var(--navy)">→</div>
+          <div style="flex:1;background:var(--white);border:1px solid var(--gold-border);border-radius:0 8px 8px 0;padding:12px 14px">
+            <div style="font-size:10px;font-weight:700;color:var(--gold-dark);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:'Manrope',sans-serif">Phase 2 — When Ready</div>
+            <div style="font-size:13px;font-weight:600;color:var(--navy);font-family:'Manrope',sans-serif">YoID on your LMS</div>
+            <div style="font-size:12px;color:var(--slate);margin-top:3px;line-height:1.4">Monthly subscription · 1–2 week sprint · Wallet UI</div>
+          </div>
+        </div>
+        <div class="emp-saving-note">This staggered approach lets you validate verified credentialing with real learners before committing to the full integration investment.</div>
+      </div>`;
+
+    return `
+      <hr class="divider">
+      <div class="emp-panel">
+        <div class="emp-panel-badge">📚 For learning providers like yours</div>
+        ${isStrong ? strongContent : stagedContent}
+      </div>
+    `;
+  }
+
+  if (key === 'yoma') {
+    const engCapacity = answers?.q4 ?? (persona?.prefill?.q4 ?? 0);
+    const q1val = answers?.q1;
+    const wantsReach = Array.isArray(q1val) ? q1val.includes(2) : q1val===2;
+    const isStrong = engCapacity === 0;
+
+    const reachTitle   = "yoma.world is not a competitor — it is your distribution channel.";
+    const testTitle    = "yoma.world is your lowest-cost way to test YoID credentialing.";
+    const strongNoReach = "yoma.world is optional for your situation. Since you have strong engineering capacity and haven't prioritised audience growth, we recommend focusing on integrating YoID directly into your LMS. You can always add yoma.world later as a distribution channel if that becomes a goal.";
+
+    if (isStrong && !wantsReach) {
+      return `
+        <hr class="divider">
+        <div class="emp-panel emp-panel-green">
+          <div class="emp-panel-badge emp-panel-badge-green">📚 For learning providers like yours</div>
+          <div class="emp-panel-title">yoma.world is optional for your current goals.</div>
+          <div class="emp-panel-body">${strongNoReach}</div>
+        </div>
+      `;
+    }
+
+    return `
+      <hr class="divider">
+      <div class="emp-panel emp-panel-green">
+        <div class="emp-panel-badge emp-panel-badge-green">📚 For learning providers like yours</div>
+        <div class="emp-panel-title">${wantsReach ? reachTitle : testTitle}</div>
+        <div class="emp-panel-body">${wantsReach
+          ? 'yoma.world gives you direct access to over 1 million registered youth actively seeking learning opportunities. You list your courses via API — your content, your branding, your completion flow — and Yoma handles discovery, engagement, and automatic credential issuance.'
+          : 'Even without an audience expansion goal, yoma.world is the ideal proof of concept for YoID credentialing. List your courses via API and your learners automatically receive blockchain-anchored credentials on completion — at no subscription cost. See exactly how it works before committing to the full YoID integration on your own platform.'
+        }</div>
+        <div class="emp-bullets" style="margin-top:14px">
+          ${wantsReach ? `
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Reach 1M+ registered youth actively seeking learning opportunities — no marketing spend required</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>YoID already integrated — learners receive verified credentials automatically on completion</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Your courses stay on your platform — Yoma handles discovery, you own the learning experience</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>${isStrong ? 'With strong engineering capacity, you can run this in parallel while integrating YoID directly into your LMS' : 'Use this as Phase 1 — test credentialing here before committing to the full YoID integration'}</span></div>
+          ` : `
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>YoID is already built in — no separate integration needed to test how credentialing works</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Zero subscription cost — list your courses via API and credentials are issued automatically</span></div>
+          <div class="emp-bullet emp-bullet-green"><div class="emp-bullet-dot emp-bullet-dot-green"></div><span>Validate the value of verified credentials with real learners before making the YoID investment</span></div>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  return '';
+}
+
+function renderCard(key,score,gatesList,fit,isTop) {
+  const p=PRODUCTS[key];
+  const tc=p.theme;
+  const col=tc==='yoid'?'var(--yoid)':tc==='yoma'?'var(--green)':'var(--ex)';
+  const dim=dimScores(key);
+
+  const gatesHtml=gatesList.map(g=>`
+    <div class="gate-alert gate-${g.type}">
+      <div class="gate-icon">${g.type==='block'?'🚫':g.type==='warn'?'⚠️':'✅'}</div>
+      <div>${g.msg}</div>
+    </div>
+  `).join('');
+
+  const whyHtml=p.why.map(w=>`
+    <div class="why-item"><div class="why-tick tick-${tc==='exchange'?'ex':tc}">✓</div><span>${w}</span></div>
+  `).join('');
+
+  const cantHtml=p.cannot.map(c=>`
+    <div class="cant-item"><div class="cant-x">✕</div><span>${c}</span></div>
+  `).join('');
+
+  const chipHtml=p.also.chips.map((ck,i)=>`
+    <span class="chip chip-${ck==='exchange'?'ex':ck}">${p.also.labels[i]}</span>
+  `).join('');
+
+  const topBanner=isTop?`<div class="top-pick-banner">⭐ Best fit for you</div>`:'';
+
+  return `
+    <div class="product-card${isTop?' top-pick':''}">
+      ${topBanner}
+      <div class="product-hero hero-${tc}">
+        <div class="product-badge badge-${tc}">${p.badge}</div>
+        <div class="hero-top">
+          <div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-tagline">${p.tagline}</div>
+          </div>
+          <div class="hero-score">
+            <div class="hero-score-label">Score</div>
+            <div class="hero-score-num">${score}</div>
+            <div style="margin-top:6px"><span class="fit-badge ${fit.cls}">${fit.label}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="score-section">
+          <div class="score-section-label">Readiness breakdown</div>
+          <div class="score-row">
+            <div class="score-dim-label">Strategic fit <span>${dim.s}/100</span></div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:${dim.s}%;background:${col}"></div></div>
+          </div>
+          <div class="score-row">
+            <div class="score-dim-label">Technical readiness <span>${dim.t}/100</span></div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:${dim.t}%;background:${col}"></div></div>
+          </div>
+          <div class="score-row">
+            <div class="score-dim-label">Cost & operational readiness <span>${dim.c}/100</span></div>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:${dim.c}%;background:${col}"></div></div>
+          </div>
+        </div>
+        ${gatesHtml?`<div style="margin-bottom:18px">${gatesHtml}</div>`:''}
+        <div style="margin-bottom:20px">
+          <div class="body-label">What this product can do for you</div>
+          <div class="why-list">${whyHtml}</div>
+        </div>
+        <hr class="divider">
+        <div style="margin-bottom:20px">
+          <div class="body-label">What this product does not do</div>
+          <div class="cant-list">${cantHtml}</div>
+        </div>
+        <hr class="divider">
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-cell-label">Integration effort</div><div class="info-cell-val">${p.cost.integration}</div></div>
+          <div class="info-cell"><div class="info-cell-label">Primary cost driver</div><div class="info-cell-val">${p.cost.design}</div></div>
+          <div class="info-cell"><div class="info-cell-label">Subscription / platform</div><div class="info-cell-val">${p.cost.subscription}</div></div>
+          <div class="info-cell"><div class="info-cell-label">Est. deployment time</div><div class="info-cell-val">${p.deployment}</div></div>
+        </div>
+        ${persona?.id === 'employer' ? renderEmployerPanel(key) : ''}
+        ${persona?.id === 'lms' ? renderLMSPanel(key) : ''}
+        ${persona?.id === 'government' ? renderGovernmentPanel(key) : ''}
+        <div class="also-box">${p.also.text}<div class="chips">${chipHtml}</div></div>
+        ${p.resources ? `
+          <hr class="divider">
+          <div style="margin-bottom:22px">
+            <div class="body-label">📖 Useful resources & next steps</div>
+            <div class="resource-grid">
+              ${p.resources.map(r=>`
+                <a href="${r.url}" target="_blank" class="resource-link">
+                  <span class="resource-link-label">${r.label}</span>
+                  <span class="resource-link-arrow">→</span>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+        <div class="cta-row">
+          <a href="${p.cta.url}" target="_blank" class="cta-p cta-${tc==='exchange'?'ex':tc}">${p.cta.label} →</a>
+          <button class="cta-s" onclick="restart()">↺ Start over</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function restart() {
+  persona=null; answers={}; stepHistory=[]; stepIdx=0; activeQuestions=[];
+  renderPersonaSelect();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+renderPersonaSelect();
+
+</script>
+</body>
+</html>
